@@ -8,16 +8,15 @@ class level:
 
     height = 0
     width = 0
+    def __init__(self, h, w):
+        self.width = w
+        self.height = h
 
-    
-
-    def __init__(self):
-        pass
-
-    def generate_map( self):
+    def generate_mapping( self):
         map_mapping = []
         for y in range(self.height):
             map_mapping.append(self.get_floor(self.width))
+        return map_mapping
 
     def get_floor(numbers):
         floors = ["Grass.png","Dirt.png", "Stone.png", "Sand.png","Cobble.png","StoneGrass.png", "Brick.png"]
@@ -34,5 +33,6 @@ class level:
                 sprite = groundSprite(x,y,col)
                 x = sprite.get_rect().right
                 map.add(sprite)
-
+            y += 16
+        return map
 

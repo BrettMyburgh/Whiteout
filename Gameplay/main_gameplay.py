@@ -1,4 +1,6 @@
 import pygame
+from ..Levels import forest_level_1
+
 
 pygame.init()
 
@@ -11,6 +13,9 @@ delta = 0
 camera_offset = pygame.Vector2(0,0)
 world_coords = pygame.Vector2(0,0)
 
+level = forest_level_1.level(5000,5000)
+mapping = level.generate_mapping()
+ground = level.generate_map(ground)
 #Created once
 
 while running:
@@ -20,6 +25,9 @@ while running:
 
     bgcolor = 170,170,170
     screen.fill(bgcolor)
+
+    ground.draw(screen)
+
     speed = 300 * delta
     keys = pygame.key.get_pressed()
     if keys[pygame.K_w]:

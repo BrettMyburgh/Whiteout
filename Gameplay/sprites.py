@@ -15,3 +15,7 @@ class groundSprite(Sprite):
     
     def get_rect(self):
         return self.rect
+    
+    def update(self, x, y):
+        self.rect.x += x
+        self.rect.y += y
