@@ -1,52 +1,55 @@
 import pygame
-import sys
-sys.path.append("...")
-from src.Levels import forest_level_1
+from ..Levels import forest_level_1
 
-pygame.init()
+class gameplay():
+    def __init__(self):
+        pass
 
-#Setup
-screen = pygame.display.set_mode((1280,720))
-clock = pygame.time.Clock()
-running = True
-delta = 0
+    def main(self):
+        pygame.init()
 
-camera_offset = pygame.Vector2(0,0)
-world_coords = pygame.Vector2(0,0)
+        #Setup
+        screen = pygame.display.set_mode((1280,720))
+        clock = pygame.time.Clock()
+        running = True
+        delta = 0
 
-level = forest_level_1.level(500,500)
-mapping = level.generate_mapping()
-ground = level.generate_map(mapping)
-#Created once
+        camera_offset = pygame.Vector2(0,0)
+        world_coords = pygame.Vector2(0,0)
 
-while running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
+        level = forest_level_1.level(500,500)
+        mapping = level.generate_mapping()
+        ground = level.generate_map(mapping)
+        #Created once
 
-    bgcolor = 170,170,170
-    screen.fill(bgcolor)
+        while running:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
 
-    ground.draw(screen)
+            bgcolor = 170,170,170
+            screen.fill(bgcolor)
 
-    speed = 300 * delta
-    keys = pygame.key.get_pressed()
-    if keys[pygame.K_w]:
-        camera_offset.y -= speed
-    if keys[pygame.K_s]:
-        camera_offset.y += speed
-    if keys[pygame.K_a]:
-        camera_offset.x -= speed
-    if keys[pygame.K_d]:
-        camera_offset.x += speed
+            ground.draw(screen)
 
-# camera_offset.x = player.rect.centerx - screen_width // 2
-# camera_offset.y = player.rect.centery - screen_height // 2
+            speed = 300 * delta
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_w]:
+                camera_offset.y -= speed
+            if keys[pygame.K_s]:
+                camera_offset.y += speed
+            if keys[pygame.K_a]:
+                camera_offset.x -= speed
+            if keys[pygame.K_d]:
+                camera_offset.x += speed
 
-        # pygame move camera
-# screen.blit(sprite.image, sprite.rect.move(-camera_offset.x, -camera_offset.y))
-    pygame.display.flip()
+        # camera_offset.x = player.rect.centerx - screen_width // 2
+        # camera_offset.y = player.rect.centery - screen_height // 2
 
-    delta = clock.tick(60) / 1000
+                # pygame move camera
+        # screen.blit(sprite.image, sprite.rect.move(-camera_offset.x, -camera_offset.y))
+            pygame.display.flip()
 
-pygame.quit()
+            delta = clock.tick(60) / 1000
+
+        pygame.quit()

@@ -34,5 +34,6 @@ class level:
                 x = sprite.get_rect().right
                 map.add(sprite)
             y += 16
+            x = 0
         return map
 
