@@ -18,7 +18,7 @@ class level:
             map_mapping.append(self.get_floor(self.width))
         return map_mapping
 
-    def get_floor(numbers):
+    def get_floor(self,numbers):
         floors = ["Grass.png","Dirt.png", "Stone.png", "Sand.png","Cobble.png","StoneGrass.png", "Brick.png"]
         weight = [0.6,0.05,0.05,0.05,0.025,0.2,0.025]
         row = random.choices(floors, weights=weight, k=numbers)

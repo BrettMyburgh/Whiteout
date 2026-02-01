@@ -1,6 +1,7 @@
 import pygame
-from ..Levels import forest_level_1
-
+import sys
+sys.path.append("...")
+from src.Levels import forest_level_1
 
 pygame.init()
 
@@ -13,9 +14,9 @@ delta = 0
 camera_offset = pygame.Vector2(0,0)
 world_coords = pygame.Vector2(0,0)
 
-level = forest_level_1.level(5000,5000)
+level = forest_level_1.level(500,500)
 mapping = level.generate_mapping()
-ground = level.generate_map(ground)
+ground = level.generate_map(mapping)
 #Created once
 
 while running:
