@@ -30,7 +30,7 @@ class gameplay():
             bgcolor = 170,170,170
             screen.fill(bgcolor)
 
-            ground.draw(screen)
+            # ground.draw(screen)
 
             speed = 300 * delta
             keys = pygame.key.get_pressed()
@@ -47,7 +47,10 @@ class gameplay():
         # camera_offset.y = player.rect.centery - screen_height // 2
 
                 # pygame move camera
-        # screen.blit(sprite.image, sprite.rect.move(-camera_offset.x, -camera_offset.y))
+            # for sprite in ground:
+            #     screen.blit(sprite.image, sprite.rect.move(-camera_offset.x, -camera_offset.y))
+
+            # screen.blit(ground.sprites.image, ground.sprites.rect.move(-camera_offset.x, -camera_offset.y))
             pygame.display.flip()
 
             delta = clock.tick(60) / 1000

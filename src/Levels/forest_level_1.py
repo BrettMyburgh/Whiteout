@@ -27,6 +27,7 @@ class level:
     def generate_map(self,mapping):
         x = 0
         y = 0
+        max_width = 0
         map = Group()
         for row in mapping:
             for col in row:
@@ -34,6 +35,17 @@ class level:
                 x = sprite.get_rect().right
                 map.add(sprite)
             y += 16
+            max_width = x
             x = 0
-        return map
+        self.save_map(map, max_width, y)
+        
+    
+    def save_map(self, group, width, height):
+        save_surface = pygame.Surface((width, height), pygame.SRCALPHA)
+        group.draw(save_surface)
+        pygame.image.save(save_surface, "level.png")
+        del(group)
+
+    def load_level(self):
+        
 
