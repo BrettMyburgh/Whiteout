@@ -9,7 +9,7 @@ class gameplay():
         pygame.init()
 
         #Setup
-        screen = pygame.display.set_mode((1280,720))
+        screen = pygame.display.set_mode((1280,720), pygame.SCALED, vsync=True)
         clock = pygame.time.Clock()
         running = True
         delta = 0
@@ -17,10 +17,18 @@ class gameplay():
         camera_offset = pygame.Vector2(0,0)
         world_coords = pygame.Vector2(0,0)
 
+        #Created once
         level = forest_level_1.level(500,500)
         mapping = level.generate_mapping()
-        ground = level.generate_map(mapping)
-        #Created once
+        level.generate_map(mapping)
+        
+        map = level.load_level()
+        for sprite in map:
+                if sprite.name == "Ground":
+                    screen_center = screen.get_rect().center
+                    sprite_rect = sprite.rect
+                    sprite_rect.center = screen_center
+                    screen.blit(sprite.image, sprite_rect)
 
         while running:
             for event in pygame.event.get():
@@ -47,8 +55,8 @@ class gameplay():
         # camera_offset.y = player.rect.centery - screen_height // 2
 
                 # pygame move camera
-            # for sprite in ground:
-            #     screen.blit(sprite.image, sprite.rect.move(-camera_offset.x, -camera_offset.y))
+            for sprite in map:
+                screen.blit(sprite.image, sprite.rect.move(-camera_offset.x, -camera_offset.y))
 
             # screen.blit(ground.sprites.image, ground.sprites.rect.move(-camera_offset.x, -camera_offset.y))
             pygame.display.flip()

@@ -2,6 +2,7 @@ import pygame
 import sys
 import random
 from ..Gameplay.sprites import groundSprite
+from ..Levels.level_sprite import levelSprite
 from pygame.sprite import Sprite, Group
 
 class level:
@@ -47,5 +48,9 @@ class level:
         del(group)
 
     def load_level(self):
-        
+        sprite = levelSprite(0,0,"level.png")
+        sprite.name = "Ground"
+        levelGroup = Group()
+        levelGroup.add(sprite)
+        return levelGroup
 
