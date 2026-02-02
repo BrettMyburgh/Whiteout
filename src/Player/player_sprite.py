@@ -1,14 +1,14 @@
 import pygame
-from pygame.sprite import Sprite, Group
+from pygame.sprite import Sprite
 from pathlib import Path
 
-class groundSprite(Sprite):
+class playerSprite(Sprite):
 
     script_dir = Path(__file__).parent
 
-    def __init__(self, x, y, image):
+    def __init__(self, x, y, file_name):
         super().__init__()
-        self.image = pygame.image.load(self.script_dir.parent / "Sprites/FreeAssets" / image)
+        self.image = pygame.image.load(self.script_dir.parent / "Sprites/FreeAssets" / file_name)
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y

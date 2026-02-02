@@ -32,7 +32,7 @@ class level:
         map = Group()
         for row in mapping:
             for col in row:
-                sprite = groundSprite(x,y,col)
+                sprite = groundSprite(x,y,"Floors/" + col)
                 x = sprite.get_rect().right
                 map.add(sprite)
             y += 16
