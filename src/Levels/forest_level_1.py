@@ -4,6 +4,7 @@ import random
 from ..Gameplay.sprites import groundSprite
 from ..Levels.level_sprite import levelSprite
 from pygame.sprite import Sprite, Group
+import os
 
 class level:
 
@@ -54,3 +55,9 @@ class level:
         levelGroup.add(sprite)
         return levelGroup
 
+    def load_opjects(self,x,y,group):
+        random_x = random.randint(20, x-20)
+        random_y = random.randint(20, y-20)
+        directory = "src/Sprites/FreeAssets/Landscape/Forest/"
+        landscape_list = [f for f in os.listdir(directory) if os.path.isfile(os.path.join(directory, f)) and "Top" in f]
+        landscape_file = random.choice(landscape_list)
