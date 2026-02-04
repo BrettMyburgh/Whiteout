@@ -64,18 +64,11 @@ class level:
             landscape_list = [f for f in os.listdir(directory) if os.path.isfile(os.path.join(directory, f)) and "Top" not in f]
             landscape_file = random.choice(landscape_list)
             landscape_item = landscapeSprite(random_x, random_y, directory + landscape_file)
-            landscape_item.image = pygame.transform.scale(landscape_item.image, (42,42))
-            landscape_item.rect.size = (42,42)
-            landscape_item.mask = pygame.mask.from_surface(landscape_item.image)
-            group.add(landscape_item)
             if "Bottom" in landscape_file:
                 landscape_rect = landscape_item.rect
                 top_right = landscape_rect.topright
                 landscape_item_top = landscapeSprite(top_right[0]-42, top_right[1]-42, directory + landscape_file.replace("Bottom", "Top"))
-                landscape_item_top.image = pygame.transform.scale(landscape_item_top.image, (42,42))
-                landscape_item_top.rect.size = (42,42)
                 landscape_item_top_rect = landscape_item_top.rect
                 landscape_item_top_rect.bottomright = top_right
-                landscape_item_top.mask = pygame.mask.from_surface(landscape_item_top.image)
                 group.add(landscape_item_top)
         return group

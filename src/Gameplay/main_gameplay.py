@@ -40,7 +40,7 @@ class gameplay():
                     camera_offset = pygame.Vector2(-sprite_rect.x/2,-sprite_rect.y/2) 
                     sprite.update(-camera_offset.x, -camera_offset.y)
                     screen.blit(sprite.image, sprite_rect)
-                    level_obstacles = 1
+                    level_obstacles = 2
                     map = level.load_opjects(sprite_rect.top, sprite_rect.left, sprite_rect.bottom, sprite_rect.right, map, level_obstacles)
 
         while running:
