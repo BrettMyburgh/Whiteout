@@ -8,14 +8,16 @@ class landscapeSprite(Sprite):
 
     def __init__(self, x, y, file_name):
         super().__init__()
-        self.image = pygame.image.load(self.script_dir.parent.parent / file_name)
+        self.image = pygame.image.load(file_name).convert_alpha()
         self.rect = self.image.get_rect()
+        # self.mask = pygame.mask.from_surface(self.image)
         self.rect.x = x
         self.rect.y = y
+        self.name = "landscape"
     
     def get_rect(self):
         return self.rect
     
     def update(self, x, y):
-        self.rect.x += x
-        self.rect.y += y
+        self.rect.x = x
+        self.rect.y = y

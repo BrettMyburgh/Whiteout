@@ -9,16 +9,18 @@ class playerSprite(Sprite):
     x = 0
     y = 0
 
-    def __init__(self, x, y, file_name):
+    def __init__(self, x, y, file_name, name):
         super().__init__()
-        self.image = pygame.image.load(self.script_dir.parent / "Sprites/FreeAssets" / file_name)
+        self.image = pygame.image.load(self.script_dir.parent / "Sprites/FreeAssets" / file_name).convert_alpha()
         self.image = pygame.transform.scale(self.image, (42,42))
         self.rect = self.image.get_rect()
         self.rect.size = (42,42)
+        self.mask = pygame.mask.from_surface(self.image)
         self.rect.x = x
         self.rect.y = y
         self.x = x
         self.y = y
+        self.name = name
     
     def get_rect(self):
         return self.rect
@@ -58,3 +60,16 @@ class playerSprite(Sprite):
         self.animate_step = 0
         self.rect.x = self.x
         self.rect.y = self.y
+
+    def check_collision(self, group):
+        for sprite in group:
+            if sprite.name == "landscape":
+                overlap = pygame.sprite.collide_mask(self, sprite)
+                if overlap:
+                    return sprite
+                else:
+                    return None
+                
+    def prevent_overlap(self, sprite):
+        bounding_recs = self.mask.get_bounding_rects()
+        test = ""

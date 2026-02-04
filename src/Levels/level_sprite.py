@@ -12,10 +12,11 @@ class levelSprite(Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
+        self.name = "ground"
     
     def get_rect(self):
         return self.rect
     
     def update(self, x, y):
-        self.rect.x += x
-        self.rect.y += y
+        self.rect.x = x
+        self.rect.y = y
