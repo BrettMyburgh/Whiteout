@@ -63,13 +63,29 @@ class playerSprite(Sprite):
 
     def check_collision(self, group):
         for sprite in group:
-            if sprite.name == "landscape":
-                overlap = pygame.sprite.collide_mask(self, sprite)
-                if overlap:
-                    return sprite
-                else:
-                    return None
-                
+            if "landscape" in sprite.name:
+                offset_x = sprite.rect.x - self.rect.x
+                offset_y = sprite.rect.y - self.rect.y
+                offset = (offset_x, offset_y)
+                overlap = self.mask.overlap(sprite.mask, offset)
+                if overlap is not None:
+                    bottom_height = self.rect.bottom - self.rect.y
+                    right = self.rect.right - self.rect.x
+                    threshold = 10
+                    directions_blocked = ""
+                    if bottom_height - overlap[1] < threshold:
+                        directions_blocked = "bottom_" + str(bottom_height - overlap[1])
+                    if overlap[1] < threshold:
+                        directions_blocked = "top_" + str(overlap[1])
+
+                    if overlap[0] < threshold:
+                        directions_blocked = "left_" + str(overlap[0])
+                    if right - overlap[0] < threshold:
+                        directions_blocked = "right_" + str(right - overlap[0])
+                    return directions_blocked
+        return None
+
     def prevent_overlap(self, sprite):
         bounding_recs = self.mask.get_bounding_rects()
+        sprite_bounding_recs = sprite.mask.get_bounding_rects()
         test = ""

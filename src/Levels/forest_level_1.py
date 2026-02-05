@@ -63,11 +63,12 @@ class level:
             directory = "src/Sprites/FreeAssets/Landscape/Forest/"
             landscape_list = [f for f in os.listdir(directory) if os.path.isfile(os.path.join(directory, f)) and "Top" not in f]
             landscape_file = random.choice(landscape_list)
-            landscape_item = landscapeSprite(random_x, random_y, directory + landscape_file)
+            landscape_item = landscapeSprite(random_x, random_y, directory + landscape_file, str(i))
+            group.add(landscape_item)
             if "Bottom" in landscape_file:
                 landscape_rect = landscape_item.rect
                 top_right = landscape_rect.topright
-                landscape_item_top = landscapeSprite(top_right[0]-42, top_right[1]-42, directory + landscape_file.replace("Bottom", "Top"))
+                landscape_item_top = landscapeSprite(top_right[0]-42, top_right[1]-42, directory + landscape_file.replace("Bottom", "Top"), str(i)+"top")
                 landscape_item_top_rect = landscape_item_top.rect
                 landscape_item_top_rect.bottomright = top_right
                 group.add(landscape_item_top)
