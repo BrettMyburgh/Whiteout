@@ -3,6 +3,7 @@ from ..Levels import forest_level_1
 from ..Player import player_base
 from ..Enemy import enemy_base
 from pygame.sprite import Group
+import random
 
 class gameplay():
     def __init__(self):
@@ -31,7 +32,7 @@ class gameplay():
         level.generate_map(mapping)
 
         player = player_base.player().load_player(screen.width / 2, screen.height / 2)
-        enemy_count = 1
+        enemy_count = 10
         
         enemies = Group()
         
@@ -112,9 +113,10 @@ class gameplay():
                     sprite.reset_animation()
 
             if len(enemies) < enemy_count and delta > 0 and delta < 1:
-                enemies = enemy_base.enemy_base().create_enemy(delta,10,10,enemies)
+                location = self.random_edge_point(screen)
+                enemies = enemy_base.enemy_base().create_enemy(delta,location[0], location[1],enemies)
                     
-            enemies.update(player.sprites()[0])
+            enemies.update(player.sprites()[0], -camera_offset.x, -camera_offset.y)
             enemies.draw(screen)
             player.draw(screen)
 
@@ -123,3 +125,21 @@ class gameplay():
             delta = clock.tick(60) / 1000
 
         pygame.quit()
+    
+    def random_edge_point(self, screen):
+        top_left = random.randint(1,4)
+        location = pygame.Vector2(0,0)
+        match top_left:
+            case 1:
+                location[1] = random.randint(0,screen.width)
+            case 2:
+                location[0] = screen.height
+                location[1] = random.randint(0,screen.width)
+            case 3:
+                location[1] = 0
+                location[0] = random.randint(0,screen.height)
+            case 4:
+                location[1] = screen.width
+                location[0] = random.randint(0,screen.height)
+
+        return location

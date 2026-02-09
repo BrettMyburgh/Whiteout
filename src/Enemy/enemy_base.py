@@ -2,7 +2,7 @@ import pygame
 from .enemy_sprite import enemySprite
 
 class enemy_base():
-    speed = 300
+    speed = 200
 
     def __init__(self):
         pass

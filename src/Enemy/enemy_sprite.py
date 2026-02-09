@@ -26,12 +26,14 @@ class enemySprite(Sprite):
     def get_rect(self):
         return self.rect
     
-    def update(self, player):
+    def update(self, player, screen_x, screen_y):
         dif_x = self.x - player.x
-        x_speed = min(abs(dif_x),self.speed)
+        x_speed = min(abs(dif_x),self.speed) 
         if dif_x > 0:
-            self.x -= x_speed 
+            self.x -= x_speed
         elif dif_x < 0:
+            self.x += x_speed
+        else:
             self.x += x_speed
         dif_y = self.y - player.y
         y_speed = min(abs(dif_y),self.speed)
@@ -39,6 +41,15 @@ class enemySprite(Sprite):
             self.y -= y_speed
         elif dif_y < 0:
             self.y += y_speed
+        else:
+            self.y -= y_speed
 
+        self.x += screen_x
+        self.y += screen_y
         self.rect.x = self.x
         self.rect.y = self.y
+        self.check_colision(player)
+
+    def check_colision(self, player):
+        if self.rect.colliderect(player.rect):
+            self.kill()
