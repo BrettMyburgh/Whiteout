@@ -1,6 +1,8 @@
 import pygame
 from ..Levels import forest_level_1
 from ..Player import player_base
+from ..Enemy import enemy_base
+from pygame.sprite import Group
 
 class gameplay():
     def __init__(self):
@@ -29,6 +31,9 @@ class gameplay():
         level.generate_map(mapping)
 
         player = player_base.player().load_player(screen.width / 2, screen.height / 2)
+        enemy_count = 1
+        
+        enemies = Group()
         
         map = level.load_level()
         for sprite in map:
@@ -52,7 +57,6 @@ class gameplay():
             screen.fill(bgcolor)
 
             camera_offset = pygame.Vector2(0,0)
-
             speed = 300 * delta
             keys = pygame.key.get_pressed()
             moved = False
@@ -106,7 +110,12 @@ class gameplay():
             else:
                 for sprite in player:
                     sprite.reset_animation()
+
+            if len(enemies) < enemy_count and delta > 0 and delta < 1:
+                enemies = enemy_base.enemy_base().create_enemy(delta,10,10,enemies)
                     
+            enemies.update(player.sprites()[0])
+            enemies.draw(screen)
             player.draw(screen)
 
             pygame.display.flip()
