@@ -116,7 +116,7 @@ class gameplay():
                 location = self.random_edge_point(screen)
                 enemies = enemy_base.enemy_base().create_enemy(delta,location[0], location[1],enemies)
                     
-            enemies.update(player.sprites()[0], -camera_offset.x, -camera_offset.y)
+            enemies.update(player.sprites()[0], -camera_offset.x, -camera_offset.y, map,enemies)
             enemies.draw(screen)
             player.draw(screen)
 
