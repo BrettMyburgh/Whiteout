@@ -1,6 +1,6 @@
 import pygame
 from ..Levels import forest_level_1
-from ..Player import player_base
+from ..Player import player_base, player_attack_sprite
 from ..Enemy import enemy_base
 from pygame.sprite import Group
 import random
@@ -14,6 +14,7 @@ class gameplay():
 
         #Setup
         screen = pygame.display.set_mode((1280,720), pygame.SCALED, vsync=True)
+        transparent_screen = pygame.Surface((1280,720), pygame.SRCALPHA)
         clock = pygame.time.Clock()
         running = True
         delta = 0
@@ -24,6 +25,7 @@ class gameplay():
         can_move_left = True
         can_move_right = True
         player = player_base.player().load_player(screen.width / 2, screen.height / 2)
+        player_attack = player_attack_sprite.playerAttackSprite(screen.width / 2, screen.height / 2, transparent_screen)
 
         #Screen movement
         camera_offset = pygame.Vector2(0,0)
@@ -39,16 +41,16 @@ class gameplay():
                     screen_center = screen.get_rect().center
                     sprite_rect = sprite.rect
                     sprite_rect.center = screen_center
-                    camera_offset = pygame.Vector2(-sprite_rect.x/2,-sprite_rect.y/2) 
+                    camera_offset = pygame.Vector2(-sprite_rect.x/2,-sprite_rect.y/2)
                     sprite.update(-camera_offset.x, -camera_offset.y)
                     screen.blit(sprite.image, sprite_rect)
                     level_obstacles = 500
                     map = level.load_opjects(sprite_rect.top, sprite_rect.left, sprite_rect.bottom, sprite_rect.right, map, level_obstacles)
-        
+
         #Enemy
         enemy_count = 10
         enemies = Group()
-        
+
         #Game loop
         while running:
             #Check for quit
@@ -59,6 +61,7 @@ class gameplay():
             #backgroud
             bgcolor = 170,170,170
             screen.fill(bgcolor)
+            transparent_screen.fill((0,0,0,0))
 
             #Camera setup
             camera_offset = pygame.Vector2(0,0)
@@ -67,7 +70,7 @@ class gameplay():
             #Enemy Generation
             if len(enemies) < enemy_count and delta > 0 and delta < 1:
                 location = self.random_edge_point(screen)
-                enemies = enemy_base.enemy_base().create_enemy(delta,location[0], location[1],enemies)
+                enemies = enemy_base.enemy_base().create_enemy(delta,location[0], location[1],enemies, transparent_screen)
 
             #Movement
             keys = pygame.key.get_pressed()
@@ -86,38 +89,45 @@ class gameplay():
                 moved = True
 
             if moved:
-                #Player Movement
+                #Player Movement reset
                 can_move_up = True
                 can_move_down = True
                 can_move_left = True
                 can_move_right = True
-                new_rect = pygame.Rect(-camera_offset.x, -camera_offset.y,0,0)
+
                 for sprite in player:
                     if sprite.name == "base":
                         #Player collision with environment
                         colliding_sprite = sprite.check_collision(map)
                         if colliding_sprite is not None:
                             if "top" in colliding_sprite:
+                                #Collides on top of player
                                 can_move_up = False
+                                #Move back to just before collision
                                 camera_offset.y = camera_offset.y + int(colliding_sprite.split("_")[1])
                             elif "bottom" in colliding_sprite:
+                                #Collides on bottom of player
                                 can_move_down = False
+                                #Move back to just before collision
                                 camera_offset.y = camera_offset.y - int(colliding_sprite.split("_")[1])
                             elif "left" in colliding_sprite:
+                                #Collides on left of player
                                 can_move_left = False
+                                #Move back to just before collision
                                 camera_offset.x = camera_offset.x + int(colliding_sprite.split("_")[1])
                             elif "right" in colliding_sprite:
+                                #Collides on right of player
                                 can_move_right = False
+                                #Move back to just before collision
                                 camera_offset.x = camera_offset.x - int(colliding_sprite.split("_")[1])
                 player.update()
 
                 #Map movement
                 for sprite in map:
                     new_rect = sprite.rect.move(-camera_offset.x, -camera_offset.y)
-                
                     sprite.update(new_rect.x, new_rect.y)
             else:
-                #Animation cancel if no move
+                #Animation cancel if player didn't move
                 for sprite in player:
                     sprite.reset_animation()
 
@@ -127,15 +137,19 @@ class gameplay():
             #Drawing
             for sprite in map:
                 screen.blit(sprite.image, sprite.rect)
+            player_attack.draw(screen, transparent_screen)
+            for enemy in enemies:
+                enemy.attack_draw(screen, transparent_screen)
             enemies.draw(screen)
             player.draw(screen)
+
 
             pygame.display.flip()
 
             delta = clock.tick(60) / 1000
 
         pygame.quit()
-    
+
     def random_edge_point(self, screen):
         #Get random point at edge of screen
         top_left = random.randint(1,4)

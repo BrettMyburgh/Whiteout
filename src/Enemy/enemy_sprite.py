@@ -1,6 +1,7 @@
 import pygame
 from pygame.sprite import Sprite
 from pathlib import Path
+from .enemy_attack_sprite import enemyAttackSprite
 
 class enemySprite(Sprite):
 
@@ -15,7 +16,7 @@ class enemySprite(Sprite):
     can_move_right = True
     name = "enemy"
 
-    def __init__(self, x, y, file_name, speed):
+    def __init__(self, x, y, file_name, speed, tranparent_screen):
         super().__init__()
         #Create enemy sprite and scale
         self.image = pygame.image.load(self.script_dir.parent / "Sprites/FreeAssets" / file_name).convert_alpha()
@@ -23,6 +24,7 @@ class enemySprite(Sprite):
         self.rect = self.image.get_rect()
         self.rect.size = (42,42)
         self.mask = pygame.mask.from_surface(self.image)
+        self.attack_sprite = enemyAttackSprite(self.rect.centerx, self.rect.centery, tranparent_screen)
 
         #Position and set speed
         self.rect.x = x
@@ -137,9 +139,14 @@ class enemySprite(Sprite):
         self.rect.x = self.x
         self.rect.y = self.y
 
+        self.attack_sprite.update(self.rect.centerx, self.rect.centery)
+
         #Temp to remove
         self.check_colision(player)
         
+    def attack_draw(self, screen,transparent_screen):
+        self.attack_sprite.draw(screen,transparent_screen)
+
     def check_colision(self, player):
         if self.rect.colliderect(player.rect):
             self.kill()
@@ -176,6 +183,6 @@ class enemySprite(Sprite):
                     #collided right side
                     if right - overlap[0] < threshold:
                         directions_blocked = "right_" + str(right - overlap[0])
-                        
+
                     return directions_blocked
         return None
