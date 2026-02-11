@@ -17,8 +17,7 @@ class player:
         return player
     
     def accessories(self, x, y, player_group):
-        hair_count = 0
-        beard_count = 0
+        #Random accessories
         directory = "src/Sprites/FreeAssets/Character/Accessories/"
         hair_list = [f for f in os.listdir(directory) if os.path.isfile(os.path.join(directory, f)) and "Hair" in f]
         beard_list = [f for f in os.listdir(directory) if os.path.isfile(os.path.join(directory, f)) and "Beard" in f]

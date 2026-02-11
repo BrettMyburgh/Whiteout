@@ -8,6 +8,7 @@ class enemy_base():
         pass
     
     def create_enemy(self, delta, x, y, group):
+        #spawn new enemy and add to the group
         self.delta = delta
         sprite = enemySprite(x,y,"Enemy/Enemy.png",self.speed * delta)
         group.add(sprite)

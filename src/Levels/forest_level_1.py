@@ -16,18 +16,21 @@ class level:
         self.height = h
 
     def generate_mapping( self):
+        #Create random map
         map_mapping = []
         for y in range(self.height):
             map_mapping.append(self.get_floor(self.width))
         return map_mapping
 
     def get_floor(self,numbers):
+        #Weighted random floors
         floors = ["Grass.png","Dirt.png", "Stone.png", "Sand.png","Cobble.png","StoneGrass.png", "Brick.png"]
         weight = [0.6,0.05,0.05,0.05,0.025,0.2,0.025]
         row = random.choices(floors, weights=weight, k=numbers)
         return row
     
     def generate_map(self,mapping):
+        #Uses mappings to create 1 map sprite for performance
         x = 0
         y = 0
         max_width = 0
@@ -57,6 +60,7 @@ class level:
         return levelGroup
 
     def load_opjects(self,start_x, start_y, end_x,end_y,group, count):
+        #Load landscape items
         for i in range(count):
             random_x = random.randint(start_x + 20, end_x-20)
             random_y = random.randint(start_y + 20, end_y -20)
