@@ -131,6 +131,9 @@ class gameplay():
                 for sprite in player:
                     sprite.reset_animation()
 
+            #collision detections
+            player_attack.check_collision(enemies)
+
             #Enemy movement
             enemies.update(player.sprites()[0], -camera_offset.x, -camera_offset.y, map,enemies)
 
